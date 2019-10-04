@@ -1,0 +1,18 @@
+.hello-btn {
+    background:red;
+    color:#fff;
+    border:0;
+}
+
+headerbar {
+    border:0;
+    background:#fff;
+}
+
+window {
+    background:#fff;
+}
+
+row label {
+    padding: 10px;
+}
