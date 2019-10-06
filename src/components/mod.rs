@@ -7,13 +7,15 @@ use std::process;
 
 const CSS: &str = include_str!("styles/app.css");
 
+use crate::db;
+
 pub struct App {
     pub window:  Window,
     pub header:  Header,    
 }
 
 impl App {
-    pub fn new() -> App {
+    pub fn new(conn: db::DataConect) -> App {
         if gtk::init().is_err() {
             println!("failed to init GTK");
             process::exit(1);
@@ -40,15 +42,16 @@ impl App {
         let padding_between_children = 0;
 
         let listbox = ListBox::new();
-        listbox.set_selection_mode(SelectionMode::Single);
+        listbox.set_selection_mode(SelectionMode::None);
         
-        for i in 1..20 {
-            let name_item = format!("item {}", i);
+        let items = conn.list();
+        for el in items.iter() {
+            let name_item = format!("item {}", el.title);
             let row = ListBoxRow::new();
             let name = Label::new(&name_item[..]);
             name.set_halign(Align::Start);
             row.add(&name);
-            listbox.add(&row);
+            listbox.add(&row);  
         }
 
         let vertical_box = Box::new(Orientation::Vertical, padding_between_children);
